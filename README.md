@@ -13,10 +13,12 @@ get-help -name [name]
 
 The all posible raod for the road-route 
 
+The road-route will find the best route with least route weight
 
-It is a all linked graph which each vertices link to another
-
-In road-route all the edges for the start is dircted and others are undirected , start with mycoordinate,we search to every road, and start to search between roads and find the shortest distance
+## roadroute 
 
 
-Each verchies represent the raods we add.when searach we calc each road for the best distance
+
+
+
+
