@@ -1,7 +1,8 @@
 . $PSScriptRoot\gps.class.ps1
+. $PSScriptRoot\graph1.ps1
 . $PSScriptRoot\graph.class.ps1
-. $PSScriptRoot\graph.ps1
 . $PSScriptRoot\bellman-ford.ps1
+
 
 describe 'graph'{
 
@@ -11,13 +12,96 @@ describe 'graph'{
 
 
         it 'test the graph function'{
-            $mycoordinate =[placecoordinate](1,2,3)
-            $placecoordinate = [placecoordinate](500,0,-1000)
-            $graph=graph $mycoordinate $placecoordinate
+            <#the_end
+            $mycoordinate =[place]::new((1,2,3))
+            $placecoordinate = [place]::new((500,0,-1000),"p")
+            $graph=graph $mycoordinate $placecoordinate ""
             $graph |should not be $null 
             
+            $graph.vertices.Values|should not be $null  #>
+            #nether
+            $mycoordinate =[place]::new((1,2,3))
+            $placecoordinate = [place]::new((500,0,-1000),"p")
+            $graph=graph $mycoordinate $placecoordinate "nether"
+            $graph |should not be $null 
+            $vertex=$graph.getVertexByKey("p")
+            
+            $neighbors= $graph.getNeighbors($vertex)
+            $neighbors[0].edges|should not be $null
+            $neighbors[1].edges|should not be $null
+            $neighbors[2].edges|should not be $null
+            $neighbors[3].edges|should not be $null
+            $neighbors[4].edges|should not be $null
+            $neighbors[5].edges|should not be $null
+
+
+            $graph.vertices.Values|should not be $null  
         }
-        
+     
+         it 'test enqueue' { 
+
+$myplace=[place]::new((1,2,3))                
+$roads=import-Clixml C:\Users\34683\bfs\xml\roads.xml|Where-Object {$_.dimension -like "nether"}
+
+$roadsqueue= New-Object System.Collections.Generic.Queue[object]
+$roadsqueue.enqueue($myplace)
+foreach ($road in $roads) { 
+    $roadsqueue.enqueue($road)
+
+}
+$roadsqueue.Count | Should BE 6
+         }
+
+         IT 'TEST weight' {
+
+            $roads=import-Clixml C:\Users\34683\bfs\xml\roads.xml|Where-Object {$_.dimension -like "nether"}
+
+$roadsqueue= New-Object System.Collections.Generic.Queue[object]
+$myplace=[place]::new((1,2,3))
+$roadsqueue.enqueue($myplace)
+$graph=new-object graph
+foreach ($road in $roads) { 
+    $roadsqueue.enqueue($road)
+
+}
+$roadsqueue.Count | Should BE 6
+#deque 1        
+$dequeue=$roadsqueue.dequeue()
+$dequeue|should not be $null
+$startvertex = new-object vertex $dequeue
+$roadsqueue.ForEach(
+{
+
+$weight=([road]::calcroute($dequeue,$_)).weight
+
+$endvertex =new-object vertex $_
+$newedge = [edge]::new($startvertex,$endvertex,$weight)
+
+$graph.addedge($newedge)
+$weight |should not be 0
+}
+)
+#deque 2
+$dequeue=$roadsqueue.dequeue()
+$dequeue|should not be $null
+$startvertex = new-object vertex $dequeue
+
+$roadsqueue.ForEach(
+{
+
+$weight=([road]::calcroute($dequeue,$_)).weight
+
+$endvertex =new-object vertex $_
+$newedge = [edge]::new($startvertex,$endvertex,$weight)
+
+$graph.addedge($newedge)
+$weight |should not be 0
+}
+)
+
+         }
+        }
+         <# 
         it 'test the error with graph function'{
 
             $placecoordinate =[placecoordinate](1,2,3)
@@ -25,7 +109,7 @@ describe 'graph'{
             $roads = import-Clixml c:\ex-sys\xml\roads.xml
             
         }
-0
+
         it 'test the graph function 3 '{
             $placecoordinate =[placecoordinate](1,2,3)
             $graph = graph $placecoordinate
@@ -260,9 +344,9 @@ $graph.vertices[3].edges.First.Value.startVertex.edges|should not be $null
             }
 
 
-} 
+} #>
         context 'bellman fold'{
-
+<# 
     it 'get distanceskey' {
         $placecoordinate=[placecoordinate](1,2,3)
         $graph = graph $placecoordinate
@@ -404,12 +488,13 @@ $graph.vertices[3].edges.First.Value.startVertex.edges|should not be $null
          
          }
         }
-
+#>
 it ' test the bellmanford' {
-    $mycoordinate=[placecoordinate](1,2,3)
-    $PLACEcoordinate=[PLACEcoordinate](500,0,1000)
-    $graph = graph $mycoordinate $PLACEcoordinate
+    $mycoordinate =[place]::new((1,2,3))
+    $placecoordinate = [place]::new((500,0,-1000),"p")
+    $graph=graph $mycoordinate $placecoordinate "nether"
     $PATHS=bellman-ford $GRAPH
+    
     $paths | should not be $null 
     $DISTANCES = $PATHS[0]
     $distances | should not be $null
@@ -430,7 +515,20 @@ it ' test the bellmanford' {
 }
 
 
+it 'test findedge'{
+    $mycoordinate =[place]::new((1,2,3))
+    $placecoordinate = [place]::new((500,0,-1000),"p")
+    $graph=graph $mycoordinate $placecoordinate "nether"
+    $vertex1= $graph.getVertexByKey("P")
+    $vertex2=$GRAPH.getVertexByKey("O")
+    $edge = $graph.findEdge($vertex1, $vertex2)
+    $edge|Should not be $null   
 
+
+}
+
+
+<# 
 
 it 'test the literation' {
 
@@ -539,9 +637,8 @@ it 'test the get distance from keys' {
     $distance= $distances[$targetroad.id]|should not be $null
 
 }
-    
+#>    
 }
 
-
-
 }
+

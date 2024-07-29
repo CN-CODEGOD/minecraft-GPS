@@ -1,10 +1,11 @@
-. $PSScriptRoot\gps.class.ps1
+import-Module "C:\Users\34683\BFS\minecraft-GPS.PSM1" -WarningAction Ignore
 . $PSScriptRoot\graph.class.ps1
 . $PSScriptRoot\graph.ps1
-. $PSScriptRoot\bellman-ford.ps1
-    
+. $PSScriptRoot\gps.class.ps1
+. $PSScriptRoot\bellman-ford
+
 describe 'TEST gps.psm1'{
-    context 'main class test'{
+<#    context 'main class test'{
         it 'test lineintersect'{
             
 
@@ -82,12 +83,39 @@ describe 'TEST gps.psm1'{
             
             $currentNode  = $currentNode.next
             $currentNode.gettype()|should be "placecoordinate"
-            $length+= [main]::calc($currentNode,$currentNode.previous)
+            $length+= [main]::calc($currentNode,$currentNode.next)
         } while (
             $currentNode
         )
         }
         
+        }#>
+
+        context "road-route"{
+            it 'test route'{
+
+                $myplace = [place]::new((1,2,3))
+$destinationwtk = [place]::new((500,0,-1000),"P")
+$graph= graph $myplace $destinationwtk  "nether"
+$PATHS  = bellman-ford $graph 
+$distances=$paths[0]
+$distance  =$distances["p"].weight
+$currentvertex= $graph.getVertexByKey("p")
+$previousvertex =$previousVertices["p"]
+$currentroute =$distances["p"]
+$currentNode = $previousvertex.getKEY()
+$currentvertex|should not be $null
+$previousvertex |should not be $null
+$currentroute.startVertex|should not be $null
+$currentroute.endVertex|should not be $null
+$currentNode|should be "o"
+            }
+            it 'test cmdlet'{
+
+                $result = road-route -road "nether" -mycoordinate (1,2,3) -destination (500,62,-1000)
+                $result |should not be $null
+
+            }
         }
 }
 

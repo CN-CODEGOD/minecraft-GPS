@@ -1,4 +1,4 @@
-. $PSScriptRoot\gps.class.ps1
+
 
 class graph {
     
@@ -8,7 +8,7 @@ class graph {
     Graph () {
         $this.DoInit($false)
     }
-    
+        
     Graph ($isDirected) {
         $this.DoInit($isDirected)
     }
@@ -98,11 +98,26 @@ class graph {
     
             $this.startVertex=$startVertex
             $this.endVertex=$endVertex
-            $this.weight=[road]::calcroute($startVertex.value,$endVertex.value)
+            $this.weight=$null
          
         
         }
 
+        edge (  
+            $startVertex
+            ,
+            $endVertex
+            ,
+            $weight
+       
+        ){
+    
+            $this.startVertex=$startVertex
+            $this.endVertex=$endVertex
+            $this.weight=$weight
+         
+        
+        }
 
      
 

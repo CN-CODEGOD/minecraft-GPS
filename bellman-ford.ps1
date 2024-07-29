@@ -1,4 +1,4 @@
-. $PSScriptRoot\graph.class.ps1
+
 
 function bellman-ford {
     param (
@@ -21,14 +21,14 @@ function bellman-ford {
   foreach ($vertex in $graph.getAllVertices()) {
       $previousVertices[$vertex.getKEY()] = $null
       if ($vertex.getKey() -ne $startVertex.getKey()) {
-          $distances[$vertex.getKey()] = [double]::PositiveInfinity
+          $distances[$vertex.getKey()] = @{weight =[double]::PositiveInfinity} 
       }
   }
 
 
   for ($iteration = 0; $iteration -lt ($graph.getAllVertices().count - 1); $iteration += 1) {
 
-   $distancesKeys = $distances.Keys
+       $distancesKeys = $distances.Keys
 
  
    try {
@@ -43,9 +43,9 @@ function bellman-ford {
           # Find out if the distance to the neighbor is shorter in this iteration
           # then in previous one.
             
-              $distanceToVertex = $distances[$vertex.getKey()]
-              $distanceToNeighbor =$distanceToVertex + $edge.weight.distance
-              $Neighbordistance = $distances[$neighbor.getkey()]  
+              $distanceToVertex = ($distances[$vertex.getKey()]).weight
+              $distanceToNeighbor =$distanceToVertex + $edge.weight.weight
+              $Neighbordistance = ($distances[$neighbor.getkey()]  ).weight
               if ($distanceToNeighbor -lt $Neighbordistance  ) {
                  $distances[$neighbor.getkey()]   = $edge.weight
                     $previousVertices[$neighbor.getKEY()] = $vertex

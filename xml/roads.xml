@@ -1,0 +1,155 @@
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04">
+  <Obj RefId="0">
+    <TN RefId="0">
+      <T>road</T>
+      <T>System.Object</T>
+    </TN>
+    <ToString>road</ToString>
+    <Props>
+      <Obj N="roadcoordinate" RefId="1">
+        <TN RefId="1">
+          <T>roadcoordinate</T>
+          <T>System.Object</T>
+        </TN>
+        <ToString>roadcoordinate</ToString>
+        <Props>
+          <I32 N="x">-6</I32>
+          <I32 N="y">63</I32>
+          <I32 N="z">0</I32>
+          <I32 N="x1">-1000</I32>
+          <I32 N="y1">63</I32>
+          <I32 N="z1">0</I32>
+        </Props>
+      </Obj>
+      <Nil N="name" />
+      <Obj N="dimension" RefId="2">
+        <TN RefId="2">
+          <T>dimension</T>
+          <T>System.Enum</T>
+          <T>System.ValueType</T>
+          <T>System.Object</T>
+        </TN>
+        <ToString>nether</ToString>
+        <I32>1</I32>
+      </Obj>
+      <I32 N="id">5</I32>
+    </Props>
+  </Obj>
+  <Obj RefId="3">
+    <TN RefId="3">
+      <T>Selected.System.Management.Automation.PSCustomObject</T>
+      <T>Deserialized.road</T>
+      <T>Deserialized.System.Object</T>
+    </TN>
+    <ToString>road</ToString>
+    <Props>
+      <Obj N="roadcoordinate" RefId="4">
+        <TN RefId="4">
+          <T>Deserialized.roadcoordinate</T>
+          <T>Deserialized.System.Object</T>
+        </TN>
+        <ToString>roadcoordinate</ToString>
+        <Props>
+          <I32 N="x">6</I32>
+          <I32 N="y">63</I32>
+          <I32 N="z">6</I32>
+          <I32 N="x1">1000</I32>
+          <I32 N="y1">63</I32>
+          <I32 N="z1">0</I32>
+        </Props>
+      </Obj>
+      <Nil N="name" />
+      <Obj N="dimension" RefId="5">
+        <TN RefId="5">
+          <T>Deserialized.dimension</T>
+          <T>Deserialized.System.Enum</T>
+          <T>Deserialized.System.ValueType</T>
+          <T>Deserialized.System.Object</T>
+        </TN>
+        <ToString>nether</ToString>
+        <I32>1</I32>
+      </Obj>
+      <I32 N="id">4</I32>
+    </Props>
+  </Obj>
+  <Obj RefId="6">
+    <TN RefId="6">
+      <T>Deserialized.Selected.System.Management.Automation.PSCustomObject</T>
+      <T>Deserialized.road</T>
+      <T>Deserialized.System.Object</T>
+    </TN>
+    <ToString>road</ToString>
+    <Props>
+      <Obj N="roadcoordinate" RefId="7">
+        <TNRef RefId="4" />
+        <ToString>roadcoordinate</ToString>
+        <Props>
+          <I32 N="x">0</I32>
+          <I32 N="y">63</I32>
+          <I32 N="z">6</I32>
+          <I32 N="x1">0</I32>
+          <I32 N="y1">63</I32>
+          <I32 N="z1">1000</I32>
+        </Props>
+      </Obj>
+      <Nil N="name" />
+      <Obj N="dimension" RefId="8">
+        <TNRef RefId="5" />
+        <ToString>nether</ToString>
+        <I32>1</I32>
+      </Obj>
+      <I32 N="id">3</I32>
+    </Props>
+  </Obj>
+  <Obj RefId="9">
+    <TNRef RefId="6" />
+    <ToString>road</ToString>
+    <Props>
+      <Obj N="roadcoordinate" RefId="10">
+        <TNRef RefId="4" />
+        <ToString>roadcoordinate</ToString>
+        <Props>
+          <I32 N="x">0</I32>
+          <I32 N="y">62</I32>
+          <I32 N="z">-291</I32>
+          <I32 N="x1">0</I32>
+          <I32 N="y1">63</I32>
+          <I32 N="z1">-6</I32>
+        </Props>
+      </Obj>
+      <Nil N="name" />
+      <Obj N="dimension" RefId="11">
+        <TNRef RefId="5" />
+        <ToString>nether</ToString>
+        <I32>1</I32>
+      </Obj>
+      <I32 N="id">2</I32>
+    </Props>
+  </Obj>
+  <Obj RefId="12">
+    <TNRef RefId="6" />
+    <ToString>road</ToString>
+    <Props>
+      <Obj N="roadcoordinate" RefId="13">
+        <TNRef RefId="4" />
+        <ToString>roadcoordinate</ToString>
+        <Props>
+          <I32 N="x">-47</I32>
+          <I32 N="y">62</I32>
+          <I32 N="z">-292</I32>
+          <I32 N="x1">1000</I32>
+          <I32 N="y1">61</I32>
+          <I32 N="z1">-293</I32>
+        </Props>
+      </Obj>
+      <Nil N="name" />
+      <Obj N="dimension" RefId="14">
+        <TNRef RefId="5" />
+        <ToString>nether</ToString>
+        <I32>1</I32>
+      </Obj>
+      <I32 N="id">1</I32>
+    </Props>
+  </Obj>
+  <Nil />
+</Objs>
