@@ -119,7 +119,7 @@ placetype :
 
 
   ##parmeterset for search-place -wynncraft_place
-       wynncraft_place { $wynncraft_places= Import-clixml $PSScriptRoot\xml\wynncraft_places.xml|Where-Object { $_.type -like $wynncraft_place.type}
+       wynncraft_place { $wynncraft_places= Import-xml $PSScriptRoot\xml\wynncraft_places.xml|Where-Object { $_.type -like $wynncraft_place.type}
        
        
 
@@ -132,7 +132,7 @@ placetype :
     
     }
     ##parmeterset for search-place -road
-       road {$roads= Import-clixml $PSScriptRoot\xml\roads.xml|Where-Object {$_.dimension -like $road.dimension}
+       road {$roads= Import-xml $PSScriptRoot\xml\road.xml|Where-Object {$_.dimension -like $road.dimension}
        
 
        $pair= $roads|foreach-object {
@@ -146,7 +146,7 @@ placetype :
 }
 ##parmeterset for search-place -survival_place
    
-       survival_place{$survival_places = Import-clixml $PSScriptRoot\xml\survival_places.xml|Where-Object {$_.dimension -like $survival_place.dimension -and $_.type -like $survival_place.type}
+       survival_place{$survival_places = Import-xml $PSScriptRoot\xml\survival_place.xml|Where-Object {$_.dimension -like $survival_place.dimension -and $_.type -like $survival_place.type}
 
       $pair =  $survival_places|foreach-object {
                 [survival_place]::searchplace($mycoordinate,$_)

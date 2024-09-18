@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<objects>
+  <object type="survival_place">
+  <property name="placecoordinate">
+    <property name="x">1</property>
+    <property name="y">1</property>
+    <property name="z">1</property>
+  </property>
+  <property name="dimension">null</property>
+  <property name="type">null</property>
+  <property name="id">0</property>
+</object>
+</objects>

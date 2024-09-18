@@ -35,7 +35,7 @@ id=0
             type='bank'
 
         })
-        $survival_place=[survival_place]([pscustomobject@{
+        $survival_place=[survival_place]([pscustomobject]@{
             placecoordinate=[pscustomobject]@{
                 x=800
                 y=60
@@ -44,7 +44,7 @@ id=0
             type= 'nether_portal'
             id=0
             dimension='nether'
-        }])
+        })
 
 
 

@@ -1,7 +1,7 @@
 describe 'gps class' {
     beforeAll{
-. "C:\Users\34683\BFS\graph.class.ps1"        
-. "C:\Users\34683\BFS\gps.class.ps1"
+. "$Psscriptroot\graph.class.ps1"        
+. "$PSScriptRoot\gps.class.ps1"
  
 $road1= [road]([pscustomobject]@{
     
@@ -58,13 +58,51 @@ $route.startVertex|should not be $null
 $route.endvertex|should not be $null
         }
     }
-    context 'save'{
+    context 'import-xml'{
         it 'road'{
-            [xml]$object = $road1.save()
-            save-object $object
-            import-xml $road1.path
+         $road1.save()
+         import-xml $road1.path|should not be $null
 
     }
 
+    it 'survival_place ' {
+
+        $survival_place = [survival_place]([pscustomobject]@{placecoordinate = @{
+
+            x=1
+            y=1
+            z=1}})
+            $survival_place.save()
+            import-xml $survival_place.path |Should not be $null
+
+    
+    
+        }
+        it 'teleportation_place'{
+
+            $teleportation_place =  [teleportation_place]([pscustomobject]@{placecoordinate = @{
+                x=1 
+                y=1
+                
+            }})
+            save-object $teleportation_place
+            import-xml $teleportation_place.path|Should not be $nul
+
+        }
+        it 'wynncraft_place'{
+            $wynncraft_place =  [wynncraft_place]([pscustomobject ]@{
+                placecoordinate = 
+                @{
+                    x=1
+                    y=1
+                    z=1
+                
+                }
+
+
+            })
+            save-object -object $wynncraft_place 
+            import-xml $wynncraft_place.path |Should not be $null
+        }
 }
 }

@@ -1,5 +1,5 @@
- using namespace system.xml.linq
- . "C:\Users\34683\BFS\graph.class.ps1"
+   using namespace system.xml.linq
+ . "$PSScriptRoot\graph.class.ps1"
 # basic CLASS
 
 
@@ -12,7 +12,8 @@ class roadcoordinate {
 roadcoordinate ($value){
 $this.DoInit($value)
 }
-roadcoordinate ([System.Numerics.Vector3]$roadcoordinate1,[System.Numerics.Vector3]$roadcoordinate2){
+roadcoordinate ([System.Numerics.Vector3]$roadcoordinate1,[System.Numerics.Vector3]$roadcoordinate2)
+{
     $this.roadcoordinate1=$roadcoordinate1
     $this.roadcoordinate2=$roadcoordinate2
 }
@@ -37,7 +38,7 @@ roadcoordinate ([System.Numerics.Vector3]$roadcoordinate1,[System.Numerics.Vecto
 )
 {
     foreach ($property in $properties.key) {
-
+ 
         $this.$property =$properties.$property
     }
 }
@@ -47,7 +48,7 @@ roadcoordinate ([System.Numerics.Vector3]$roadcoordinate1,[System.Numerics.Vecto
 
 # advance class
 ## place 
-class place { 
+class place {       
 
     [System.Numerics.Vector3]$placecoordinate
     [string]$id="O"
@@ -632,6 +633,7 @@ class wynncraft_place {
     [System.Numerics.Vector3]$placecoordinate
     [int]$id
     [place_type]$type
+    hidden $path = "$PSScriptRoot\xml\wynncraft_place.xml"
 
     
 ### construct
@@ -671,6 +673,29 @@ else
         }
     }
 
+    [object]save(){
+
+    $object=[XElement]::new("object",[XAttribute]::new("type","wynncraft_place"),
+        [XElement]::new("property",[XAttribute]::new("name","placecoordinate"),
+        [XElement]::new("property",[XAttribute]::new("name","x"),$this.placecoordinate.x),
+        [XElement]::new("property",[XAttribute]::new("name","y"),$this.placecoordinate.y),
+        [XElement]::new("property",[XAttribute]::new("name","z"),$this.placecoordinate.x)
+
+        
+        ),
+
+        [XElement]::new("property",[XAttribute]::new("name","id"),$this.id),
+        [XElement]::new("property",[XAttribute]::new("name","type"),$this.type)
+        )
+
+
+
+
+        return $object.tostring()
+
+
+    }
+
 
     #### validate method for repeat adding
 static [void]validate ([wynncraft_place]$wynncraft_place,[int]$distance_limit){
@@ -708,6 +733,7 @@ class survival_place {
     [dimension]$dimension
     [place_type]$type
     [int]$id
+    hidden $path = "$PSScriptRoot\xml\survival_place.xml"
 
     ### construct 
 survival_place ($properties) {
@@ -743,6 +769,24 @@ survival_place ($properties) {
            $this.$Propertyname= $pscustomobject.$Propertyname
         }
     }
+    [Object]save(){
+
+        $object = [XElement]::new("object",[XAttribute]::new("type","survival_place"),
+
+        [XElement]::new("property",[XAttribute]::new("name","placecoordinate"),
+        [XElement]::new("property",[XAttribute]::new("name","x"),$this.placecoordinate.x),
+        [XElement]::new("property",[XAttribute]::new("name","y"),$this.placecoordinate.y),
+        [XElement]::new("property",[XAttribute]::new("name","z"),$this.placecoordinate.z)
+
+        
+        
+        ),
+        [XElement]::new("property",[XAttribute]::new("name","dimension"),$this.dimension),
+        [XElement]::new("property",[XAttribute]::new("name","type"),$this.type),
+        [XElement]::new("property",[XAttribute]::new("name","id"),$this.id)
+        )
+        return $object.ToString()
+    }
 
 #### validation mathod for repeat adding
    static [void]validate ([survival_place]$survival_place,[int]$distance_limit){
@@ -766,6 +810,7 @@ class teleportation_place {
   [System.Numerics.Vector3]$placecoordinate
     [int]$id
     [string]$name
+    hidden $path = "$PSScriptRoot\xml\teleportation_place.xml"  
     ### construct 
      teleportation_place ($properties){
 
@@ -773,8 +818,8 @@ class teleportation_place {
      }
 ### Method
 #### DoInit
-[void]DoInit ($value){ 
-    [int32]$attempt=-1
+    [void]DoInit ($value){ 
+        [int32]$attempt=-1
     if ([int32]::TryParse($value,[ref]$attempt))
     {
         $this.id=$attempt
@@ -801,6 +846,21 @@ class teleportation_place {
         }
     }
     ### validate method for repeat adding
+
+[Object]save(){
+
+
+$object =[XElement]::new("object",[XAttribute]::new("type","teleportation_place"),
+[XElement]::new("property",[XAttribute]::new("name","placecoordinate"),
+[XElement]::new("property",[XAttribute]::new("name","x"),$this.placecoordinate.x),
+[XElement]::new("property",[XAttribute]::new("name","y"),$this.placecoordinate.y),
+[XElement]::new("property",[XAttribute]::new("name","z"),$this.placecoordinate.Z)
+),
+[XElement]::new("property",[XAttribute]::new("name","id"),$this.id ),
+[XElement]::new("property",[XAttribute]::new("name","name"),$this.name)
+)
+return $object.ToString()   
+}
 
    static [void] validate([teleportation_place]$teleportation_place,[int]$distance_limit) 
     
