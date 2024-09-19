@@ -1,20 +1,9 @@
-. $PSScriptRoot\graph.class.ps1
-. $PSScriptRoot\graph1.ps1
-. $PSScriptRoot\gps.class.ps1
-. $PSScriptRoot\bellman-ford
-
 
 
 
 #main GPS parameter holder class
 
-
-function search-place {
-
-
-
-
-        <#
+      <#
 .SYNOPSIS
 search-place 
 -wynncraft_place (placetype) -mycoordinate ()
@@ -23,8 +12,8 @@ search-place
 
 -road (dimension) -mycoordinate ()
 .DESCRIPTION
-GPS module function search-place 
-search the structure near around you
+search the near place around you 
+
 .PARAMETER Path
 .
 .PARAMETER LiteralPath
@@ -85,6 +74,12 @@ placetype :
 
     #>
 
+function search-place {
+
+
+
+
+  
 #search-place
 
     [CmdletBinding()]
@@ -119,7 +114,7 @@ placetype :
 
 
   ##parmeterset for search-place -wynncraft_place
-       wynncraft_place { $wynncraft_places= Import-xml $PSScriptRoot\xml\wynncraft_places.xml|Where-Object { $_.type -like $wynncraft_place.type}
+       wynncraft_place { $wynncraft_places= Import-xml $wynncraft_place.path|Where-Object { $_.type -like $wynncraft_place.type}
        
        
 
@@ -132,7 +127,7 @@ placetype :
     
     }
     ##parmeterset for search-place -road
-       road {$roads= Import-xml $PSScriptRoot\xml\road.xml|Where-Object {$_.dimension -like $road.dimension}
+       road {$roads= Import-xml $road.path|Where-Object {$_.dimension -like $road.dimension}
        
 
        $pair= $roads|foreach-object {
@@ -146,7 +141,7 @@ placetype :
 }
 ##parmeterset for search-place -survival_place
    
-       survival_place{$survival_places = Import-xml $PSScriptRoot\xml\survival_place.xml|Where-Object {$_.dimension -like $survival_place.dimension -and $_.type -like $survival_place.type}
+       survival_place{$survival_places = Import-xml $survival_place.path|Where-Object {$_.dimension -like $survival_place.dimension -and $_.type -like $survival_place.type}
 
       $pair =  $survival_places|foreach-object {
                 [survival_place]::searchplace($mycoordinate,$_)
@@ -171,8 +166,7 @@ placetype :
     
 }
   #find-place
-function find-place {
-    
+  
         <#
 .SYNOPSIS
 find-place 
@@ -184,61 +178,15 @@ find-place
 
 -teleportation_place ()
 .DESCRIPTION
-GPS module function search-place 
-search the structure near around you
+get place from xml by id or type 
+
 .PARAMETER Path
 .
 .PARAMETER LiteralPath
 .
 .EXAMPLE
-find-place -wynncraft_place "bank"
-____________________
-placetype :
-    potion_merchant
-    blackSmith
-    scroll_merchant
-    farm
-    fishing
-    tool_merchant
-    
-    mine
-    identifier
-    bank
-    chest
-    powder_master
-    housing
- 
-    boat 
-    woodland_mansion
-    ocean_mountain
-    pillager_outpost
-    village
-    portal
-    fortress
-    slime_chunk
-    ravine
-    ocean_ruins
-    fossil
-    Trail_Ruins
-    roads
-    stronghold
-    Ancient_City
-    Desert_Temple
-    lgloo
-    Biomes
-    mineshaft
-    shipwreck
-    cave
-    lava_pool
-    Geode
-    apple
-    ore_veins
-    Derset_wellwitch_hut
-_________________________________
-    Dimension:
-    nether
-    the_end
-    overworld
+get-place -wynncraft_place "blackSmith"
+
 
     Author: CN_CODEGOD
     Date: June 10, 2024
@@ -248,6 +196,8 @@ _________________________________
 
 
     #>
+function get-place {
+    
 
    [CmdletBinding()]
    param (
@@ -275,22 +225,22 @@ _________________________________
    
    switch ($pscmdlet.parametersetname) {
     survival_place { 
-Import-clixml $PSScriptRoot\xml\survival_places.xml|Where-Object { 
+Import-xml $survival_place.path|Where-Object { 
     $_.type -like $survival_place.type -or $_.id -eq $survival_place.id
 }
      }
     wynncraft_place{ 
-        Import-clixml $PSScriptRoot\xml\wynncraft_places.xml|Where-Object {
+        Import-xml $wynncraft_place.path|Where-Object {
             $_.type -like $wynncraft_place.type -or $_.id -eq $wynncraft_place.id
         }
     }
-    road { Import-clixml $PSScriptRoot\xml\roads.xml |Where-Object{
+    road { Import-xml  $road.path |Where-Object{
         $_.dimension -like $road.dimension -or $_.id -eq $road.id
 
     } }
     teleportation_place { 
 
-        Import-clixml $PSScriptRoot\xml\teleportation_places.xml|Where-Object {$_.name -eq $teleportation_place.name -or $_.id -eq $teleportation_place.id}
+        Import-xml $teleportation_place.path|Where-Object {$_.name -eq $teleportation_place.name -or $_.id -eq $teleportation_place.id}
     }  
     
    }
@@ -299,77 +249,97 @@ Import-clixml $PSScriptRoot\xml\survival_places.xml|Where-Object {
 
 }
     
-          ##function to teleportation route
-function teleportation-route {
+  
+        <#
+.SYNOPSIS
+searach-place -teleportation_place [teleportation_place] -destination [vector3] -my coordinate [vector3]
+ 
+search-place -road [road] -destination [vector3] -my coordinate [vector3]
+ 
+
+
+.DESCRIPTION
+search route from teleportation or road
+
+.PARAMETER Path
+.
+.PARAMETER LiteralPath
+.
+.EXAMPLE
+search-place -road ([pscustomobject]@{
+dimension = 'nether' -mycoordinate (1,2,3) -destination (1,2,3)
+
+
+search-place -teleportation_place -mycoordinate (1,2,3) -destination (1,2,3)
+}
+
+)
+
+
+    Author: CN_CODEGOD
+    Date: June 10, 2024
+
+ 
+.NOTES
+
+
+    #>
+
+function search-route {
  [CmdletBinding()]
  param (
+   
+     # Parameter help description
      [Parameter()]
-     [placecoordinate]
+     [System.Numerics.Vector3]
      $destination
+     ,
+     # Parameter help description
+     [Parameter()]
+     [System.Numerics.Vector3]
+     $mycoordinate
+     ,
+     # Parameter help description
+     [Parameter(ParameterSetName="road")]
+     [road]
+     $road
+     ,# 
+     [Parameter(ParameterSetName="teleportation_place")]
+     [teleportation_place]
+     $teleportation_place
  )
 
- $teleportation_places= Import-clixml $PSScriptRoot\xml\teleportation_places.xml
-    
-    $pair = $teleportation_places|foreach-object {
+ switch ($PSCmdlet.ParameterSetName) {
+    road { 
 
-                [teleportation_place]::calcroute($destination,$_)
-             
-            } |sort-object -Property distance -Descending |select-object -Last 1  
-       
-       
-        
-           "最佳的路线为:传送到{0}再前往目的地"  -f $pair.name
+$roads =  import-xml $road.path
+
+
+     }
+    teleportation_place {
+
+$teleportation_places = import-xml $teleportation_place.Path
+
+$pair = $teleportation_places|foreach-object {
+
+    [teleportation_place]::calcroute($destination,$_)
+ 
+} |sort-object -Property distance -Descending |select-object -Last 1  
+
+
+
+"最佳的路线为:传送到{0}再前往目的地"  -f $pair.name
+
+
+}
+
+    }
+ }
     
-     
-        }
+
     
 ##function to road route
 
-function road-route {
- [CmdletBinding()]
- param (
-     [Parameter()]
-     [road]
-     $road
-     ,
-     
-     [Parameter()]
-     [placecoordinate]
-     $destination
-     ,
-     
-     [Parameter()]
-     [placecoordinate]
-     $mycoordinate
- )
-
- 
- 
-$myplace = [place]::new($mycoordinate)
-$destinationwtk = [place]::new($destination,"P")
- $graph= graph $myplace $destinationwtk  $road.dimension
- $PATHS  = bellman-ford $graph 
-$distances=$paths[0]
-$distance  =$distances["p"].weight
-$previousVertices=$paths[1]
-#FIND full paths 
-"最佳路线:"
-
-
-    
-$currentvertex= $graph.getVertexByKey("p")
-$previousvertex =$previousVertices["p"]
-
-
-"{0},{1},{2}---{3},{4},{5}" -f $currentroute.startVertex.x,$currentroute.startVertex.y,$currentroute.startVertex.z,$currentroute.endvertex.x,$currentroute.endVertex.y,$currentroute.endVertex.z
-
-
-
-
-
- 
-"全长为{0}" -f $distance
-}
 
 
 
@@ -480,13 +450,12 @@ place_type :
 
                 
                   
-                    $roads = Import-clixml $PSScriptRoot\xml\roads.xml
+                 
                     [road]::validate($road)
                     $id =[int]($roads|Sort-Object -Property id |Select-Object -Last 1).id+1
                   $road.id=$id
-                  $roads=[System.Collections.Generic.List[road]]$road+$roads
-                  $roads|export-Clixml $PSScriptRoot\xml\roads.xml
-                  "成功添加路线 ：{0},{1},{2}----{3},{4},{5}" -f $road.roadcoordinate.x,$road.roadcoordinate.y,$road.roadcoordinate.z,$road.roadcoordinate.x1,$road.roadcoordinate.y1,$road.roadcoordinate.z1
+      save-object -object $road
+                  "成功添加路线 ：{0},{1},{2}----{3},{4},{5}" -f $road.roadcoordinate.roadcoordinate1.x,$road.roadcoordinate.roadcoordinate1.y,$road.roadcoordinate.roadcoordinate1.z,$road.roadcoordinate.roadcoordinate2.x,$road.roadcoordinate.roadcoordinate2.y,$road.roadcoordinate.roadcoordinate2.z
 
                 }
              
@@ -508,11 +477,11 @@ Default {$distance_limit=50}
 
                 }
 [wynncraft_place]::validate($wynncraft_place,$distance_limit)
-$wynncraft_places = Import-clixml $PSScriptRoot\xml\wynncraft_places.xml
+
 $id =[int]($wynncraft_places  |Sort-Object -Property id |Select-Object -Last 1).id+1
 $wynncraft_place.id =$id
-$wynncraft_places=[System.Collections.Generic.List[wynncraft_place]]$wynncraft_place+$wynncraft_places
-$wynncraft_places|Export-Clixml $PSScriptRoot\xml\wynncraft_places.xml
+
+save-object -object $wynncraft_place
 
 "成功添加{0},坐标为:{1},{2},{3}" -f $wynncraft_place.type ,$wynncraft_place.placecoordinate.x,$wynncraft_place.placecoordinate.y,$wynncraft_place.placecoordinate.z
 
@@ -527,26 +496,25 @@ $wynncraft_places|Export-Clixml $PSScriptRoot\xml\wynncraft_places.xml
                     
                 }
                 [survival_place]::validate($survival_place,$distance_limit)
-                $survival_places = Import-clixml $PSScriptRoot\xml\survival_places.xml
+                
 
                 $id =[int]($survival_places|Sort-Object -Property id |Select-Object -Last 1).id+1
                 
-            $survival_place.id=$id    
+            $survival_place.id  =$id    
             
-            $survival_places=[System.Collections.Generic.List[survival_place]]$survival_place+$survival_places
-            $survival_places|Export-Clixml $PSScriptRoot\xml\survival_places.xml
+                save-object -object $survival_place
             "成功添加生存存档{0}坐标：{1},{2},{3}" -f $survival_place.type,$survival_place.placecoordinate.x,$survival_place.placecoordinate.y,$survival_place.placecoordinate.z
 
             
                  }
                  #parameter for add-place -teleportation_place
-            teleportation_place {$teleportation_places = Import-clixml $PSScriptRoot\xml\teleportation_places.xml
+            teleportation_place {
+
                 [teleportation_place]::validate($teleportation_place,50)
             $id =[int]($teleportation_places|Sort-Object -Property id |Select-Object -Last 1).id+1
             $teleportation_place.id=$id 
             
-            $teleportation_places=[System.Collections.Generic.List[teleportation_place]]$teleportation_place + $teleportation_places
-            $teleportation_places|Export-Clixml $PSScriptRoot\xml\teleportation_places.xml
+                save-object -object $teleportation_place
             "成功添加传送点{0} ,坐标{1},{2},{3}" -f $teleportation_place.name,$teleportation_place.placecoordinate.x,$teleportation_place.placecoordinate.y,$teleportation_place.placecoordinate.z
            }
 
@@ -606,38 +574,41 @@ remove-place -wynncraft_place "1"
         road { 
 
 
-$roads = Import-clixml $PSScriptRoot\xml\roads.xml
+$roads = import-xml $road.path
 $pair=$roads|Where-Object {$_.id -eq $road.id}
 $roads=$roads|Where-Object {$_.id -ne $road.id}
-$roads|Export-Clixml -path $PSScriptRoot\xml\roads.xml        
-"成功移除{0}号路线:{1},{2},{3},{4},{5},{6}" -f $pair.id ,$pair.roadcoordinate.x,$pair.roadcoordinate.y,$pair.roadcoordinate.z,$pair.roadcoordinate.x1,$pair.roadcoordinate.y1,$pair.roadcoordinate.z1
+$roads|export-object -path $road.path       
+"成功移除{0}号路线:{1},{2},{3},{4},{5},{6}" -f $pair.id ,$pair.roadcoordinate.roadcoordinate1.x,$pair.roadcoordinate.roadcoordinate1.y,$pair.roadcoordinate.roadcoordinate1.z,$pair.roadcoordinate.roadcoordinate2.x1,$pair.roadcoordinate.roadcoordinate2.y,$pair.roadcoordinate.roadcoordinate2.z
         }
         ##parameterset script block for remove-place -wynncraft_place
         wynncraft_places {
-            $wynncraft_places = Import-clixml $PSScriptRoot\xml\wynncraft_places.xml
-            $pair=   $wynncraft_places|Where-Object {$_.id -eq $wynncraft_place.id}
-            $wynncraft_places = $wynncraft_places|Where-Object {$_.id -ne $wynncraft_place.id}
+$wynncraft_places= import-xml $wynncraft_place.path
 
-            $wynncraft_places|Export-Clixml -path $PSScriptRoot\xml\wynncraft_places.xml   
-            " 成功移除{0},坐标{1},{2},{3}" -f $pair.type,$pair.placecoordinate.x,$pair.placecoordinate.y,$pair.placecoordinate.z
+$pair = $wynncraft_places|Where-Object {$_.id -eq $wynncraft_place.id}
+$wynncraft_places= $wynncraft_places|Where-Object {$_.id -ne $wynncraft_place.id}
+$wynncraft_places|export-object -Path $wynncraft_place.path
+"成功移除{0}号:坐标为{1},{2},{3}" -f $pair.id ,$pair.placecoordinate.x,$pair.placecoordinate.y,$pair.placecoordinate.z
+
+
 
 }
 ##parameterset script block for remove-place -survival_place
         survival_places { 
-            $survival_places = Import-clixml $PSScriptRoot\xml\survival_places.xml
-            $pair=   $survival_places|Where-Object {$_.id -eq $survival_place.id}
-            $survival_places = $survival_places|Where-Object {$_.id -ne $survival_place.id}
-            $survival_places|Export-Clixml -path $PSScriptRoot\xml\survival_places.xml
+        $survival_places = import-xml $survival_place.path 
+
+        $pair = $survival_places|Where-Object {$_.id -eq $road.id}
+        $survival_places = $survival_places|Where-Object {$_.id -ne $survival_place.id}
+        $survival_places|export-object -Path $survival_place.path
             "成功移除{0},坐标{1},{2},{3}" -f $pair.type,$pair.placecoordinate.x,$pair.placecoordinate.y,$pair.placecoordinate.z
 
 
         }
         ##parameterset script block for remove-place -teleportation_place
         teleportation_place { 
-        $teleportation_places = Import-clixml $PSScriptRoot\xml\teleportation_places.xml
+        $teleportation_places = import-xml $teleportation_place.path 
         $pair =  $teleportation_places|Where-Object {$_.id -eq $teleportation_place.id}
 $teleportation_places = $teleportation_places|Where-Object {$_.id -ne $teleportation_place.id}
-$teleportation_places|Export-Clixml -path $PSScriptRoot\xml\teleportation.xml
+$teleportation_places|export-object -path $teleportation_place.path
 
 "成功移除传送点{0}，坐标{1},{2},{3}" -f $pair.name,$pair.placecoordinate.x,$pair.placecoordinate.y,$pair.placecoordinate.z
     }

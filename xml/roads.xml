@@ -3,14 +3,14 @@
   <object type="road" id="1">
     <property name="roadcoordinate">
       <property name="roadcoordinate1">
-        <property name="x">1</property>
-        <property name="y">1</property>
-        <property name="z">1</property>
+        <property name="x">0</property>
+        <property name="y">0</property>
+        <property name="z">0</property>
       </property>
       <property name="roadcoordinate2">
-        <property name="x">2</property>
-        <property name="y">1</property>
-        <property name="z">2</property>
+        <property name="x">0</property>
+        <property name="y">0</property>
+        <property name="z">0</property>
       </property>
     </property>
     <property name="name" />
@@ -20,21 +20,21 @@
   <object type="road" id="2">
     <property name="roadcoordinate">
       <property name="roadcoordinate1">
-        <property name="x">1</property>
-        <property name="y">1</property>
-        <property name="z">1</property>
+        <property name="x">0</property>
+        <property name="y">0</property>
+        <property name="z">0</property>
       </property>
       <property name="roadcoordinate2">
-        <property name="x">2</property>
-        <property name="y">1</property>
-        <property name="z">2</property>
+        <property name="x">0</property>
+        <property name="y">0</property>
+        <property name="z">0</property>
       </property>
     </property>
     <property name="name" />
     <property name="dimension">null</property>
     <property name="id">0</property>
   </object>
-  <object type="road">
+  <object type="road" id="3">
     <property name="roadcoordinate">
       <property name="roadcoordinate1">
         <property name="x">0</property>
@@ -51,24 +51,7 @@
     <property name="dimension">null</property>
     <property name="id">0</property>
   </object>
-  <object type="road">
-    <property name="roadcoordinate">
-      <property name="roadcoordinate1">
-        <property name="x">0</property>
-        <property name="y">0</property>
-        <property name="z">0</property>
-      </property>
-      <property name="roadcoordinate2">
-        <property name="x">0</property>
-        <property name="y">0</property>
-        <property name="z">0</property>
-      </property>
-    </property>
-    <property name="name" />
-    <property name="dimension">null</property>
-    <property name="id">0</property>
-  </object>
-  <object type="road">
+  <object type="road" id="4">
   <property name="roadcoordinate">
     <property name="roadcoordinate1">
       <property name="x">0</property>

@@ -816,6 +816,9 @@ class teleportation_place {
 
         $this.Doinit($properties)
      }
+ 
+
+
 ### Method
 #### DoInit
     [void]DoInit ($value){ 
@@ -823,6 +826,9 @@ class teleportation_place {
     if ([int32]::TryParse($value,[ref]$attempt))
     {
         $this.id=$attempt
+    }
+    elseif ($null -eq $value) {
+        $this = $this.DoInit(0)
     }
     else
     {
