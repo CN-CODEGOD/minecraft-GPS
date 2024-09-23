@@ -9,7 +9,7 @@
 @{
 
 # Script module or binary module file associated with this manifest.
-RootModule = 'minecraft-GPS'
+RootModule = 'Minecraft-gps'
 
 # Version number of this module.
 ModuleVersion = '2.0'
@@ -18,7 +18,7 @@ ModuleVersion = '2.0'
 # CompatiblePSEditions = @()
 
 # ID used to uniquely identify this module
-GUID = '52560c47-a848-4f6b-b184-a14a2e7f69a7'
+GUID = 'b09c92e4-00ee-42df-9c99-e651f6c21f23'
 
 # Author of this module
 Author = 'CN_codegod'

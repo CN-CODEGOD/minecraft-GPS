@@ -284,40 +284,21 @@ search-place -teleportation_place -mycoordinate (1,2,3) -destination (1,2,3)
 
 
     #>
+    function teleportation-route {
+       [CmdletBinding()]
+       param (
+           [Parameter()]
+           [placecoordinate]
+           $destination
+           ,
+           # Parameter help description
+           [Parameter()]
+           [placecoordinate]
+           $mycoordinate
+       )
+        $teleportation_places= import-xml $PSScriptRoot'\xml\teleportation_place.xml'
 
-function search-route {
- [CmdletBinding()]
- param (
-   
-     # Parameter help description
-     [Parameter()]
-     [System.Numerics.Vector3]
-     $destination
-     ,
-     # Parameter help description
-     [Parameter()]
-     [System.Numerics.Vector3]
-     $mycoordinate
-     ,
-     # Parameter help description
-     [Parameter(ParameterSetName="road")]
-     [road]
-     $road
-     ,# 
-     [Parameter(ParameterSetName="teleportation_place")]
-     [teleportation_place]
-     $teleportation_place
- )
-
- switch ($PSCmdlet.ParameterSetName) {
-    road { 
-
-$roads =  import-xml $road.path
-
-
-     }
-    teleportation_place {
-
+        
 $teleportation_places = import-xml $teleportation_place.Path
 
 $pair = $teleportation_places|foreach-object {
@@ -330,12 +311,32 @@ $pair = $teleportation_places|foreach-object {
 
 "最佳的路线为:传送到{0}再前往目的地"  -f $pair.name
 
-
-}
-
     }
- }
+
+function road-route {
+   [CmdletBinding()]
+   param (
+       [Parameter()]
+       [Placecoordinate]
+       $destination
+       ,
+       # Parameter help description
+       [Parameter()]
+       [placecoordinate]
+       $mycoordinate
+       ,
+       # Parameter help description
+       [Parameter()]
+       [road]
+       $road 
+
+   )
+    $roads = import-xml $road.path|Where-Object {$_.dimension -eq $road.dimension }
     
+
+
+   
+}
 
     
 ##function to road route

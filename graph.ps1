@@ -14,7 +14,7 @@ function graph {
 
     )
     
-$roads=import-Clixml $PSScriptRoot\xml\roads.xml|Where-Object {$_.dimension -like $dimension}
+$roads=import-xml $PSScriptRoot\xml\roads.xml|Where-Object {$_.dimension -like $dimension}
 $graph = New-Object Graph
 $roadsqueue= New-Object System.Collections.Generic.Queue[object]
 $roadsqueue.enqueue($myplace)
