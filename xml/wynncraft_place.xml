@@ -1,6 +1,69 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <objects>
   <object type="wynncraft_place">
+    <property name="placecoordinate">
+      <property name="x">1</property>
+      <property name="y">1</property>
+      <property name="z">1</property>
+    </property>
+    <property name="id">0</property>
+    <property name="type">null</property>
+  </object>
+  <object type="wynncraft_place" id="1">
+    <property name="placecoordinate">
+      <property name="x">1</property>
+      <property name="y">1</property>
+      <property name="z">1</property>
+    </property>
+    <property name="id">0</property>
+    <property name="type">null</property>
+  </object>
+  <object type="wynncraft_place" id="2">
+    <property name="placecoordinate">
+      <property name="x">1</property>
+      <property name="y">1</property>
+      <property name="z">1</property>
+    </property>
+    <property name="id">0</property>
+    <property name="type">null</property>
+  </object>
+  <object type="wynncraft_place" id="3">
+    <property name="placecoordinate">
+      <property name="x">1</property>
+      <property name="y">1</property>
+      <property name="z">1</property>
+    </property>
+    <property name="id">0</property>
+    <property name="type">null</property>
+  </object>
+  <object type="wynncraft_place" id="4">
+    <property name="placecoordinate">
+      <property name="x">1</property>
+      <property name="y">1</property>
+      <property name="z">1</property>
+    </property>
+    <property name="id">0</property>
+    <property name="type">null</property>
+  </object>
+  <object type="wynncraft_place" id="5">
+    <property name="placecoordinate">
+      <property name="x">1</property>
+      <property name="y">1</property>
+      <property name="z">1</property>
+    </property>
+    <property name="id">0</property>
+    <property name="type">null</property>
+  </object>
+  <object type="wynncraft_place" id="6">
+    <property name="placecoordinate">
+      <property name="x">1</property>
+      <property name="y">1</property>
+      <property name="z">1</property>
+    </property>
+    <property name="id">0</property>
+    <property name="type">null</property>
+  </object>
+  <object type="wynncraft_place" id="7">
   <property name="placecoordinate">
     <property name="x">1</property>
     <property name="y">1</property>

@@ -10,6 +10,69 @@
     <property name="name" />
   </object>
   <object type="teleportation_place">
+    <property name="placecoordinate">
+      <property name="x">1</property>
+      <property name="y">1</property>
+      <property name="z">0</property>
+    </property>
+    <property name="id">0</property>
+    <property name="name" />
+  </object>
+  <object type="teleportation_place" id="1">
+    <property name="placecoordinate">
+      <property name="x">1</property>
+      <property name="y">1</property>
+      <property name="z">0</property>
+    </property>
+    <property name="id">0</property>
+    <property name="name" />
+  </object>
+  <object type="teleportation_place" id="2">
+    <property name="placecoordinate">
+      <property name="x">1</property>
+      <property name="y">1</property>
+      <property name="z">0</property>
+    </property>
+    <property name="id">0</property>
+    <property name="name" />
+  </object>
+  <object type="teleportation_place" id="3">
+    <property name="placecoordinate">
+      <property name="x">1</property>
+      <property name="y">1</property>
+      <property name="z">0</property>
+    </property>
+    <property name="id">0</property>
+    <property name="name" />
+  </object>
+  <object type="teleportation_place" id="4">
+    <property name="placecoordinate">
+      <property name="x">1</property>
+      <property name="y">1</property>
+      <property name="z">0</property>
+    </property>
+    <property name="id">0</property>
+    <property name="name" />
+  </object>
+  <object type="teleportation_place" id="5">
+    <property name="placecoordinate">
+      <property name="x">1</property>
+      <property name="y">1</property>
+      <property name="z">0</property>
+    </property>
+    <property name="id">0</property>
+    <property name="name" />
+  </object>
+  <object type="teleportation_place" id="6">
+    <property name="placecoordinate">
+      <property name="x">1</property>
+      <property name="y">1</property>
+      <property name="z">0</property>
+    </property>
+    <property name="id">0</property>
+    <property name="name" />
+  </object>
+  <object type="teleportation_place" id="7">
   <property name="placecoordinate">
     <property name="x">1</property>
     <property name="y">1</property>

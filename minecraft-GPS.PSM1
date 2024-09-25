@@ -288,12 +288,12 @@ search-place -teleportation_place -mycoordinate (1,2,3) -destination (1,2,3)
        [CmdletBinding()]
        param (
            [Parameter()]
-           [placecoordinate]
+           [System.Numerics.Vector3]
            $destination
            ,
            # Parameter help description
            [Parameter()]
-           [placecoordinate]
+           [System.Numerics.Vector3]
            $mycoordinate
        )
         $teleportation_places= import-xml $PSScriptRoot'\xml\teleportation_place.xml'
@@ -317,12 +317,12 @@ function road-route {
    [CmdletBinding()]
    param (
        [Parameter()]
-       [Placecoordinate]
+       [System.Numerics.Vector3]
        $destination
        ,
        # Parameter help description
        [Parameter()]
-       [placecoordinate]
+       [System.Numerics.Vector3]
        $mycoordinate
        ,
        # Parameter help description

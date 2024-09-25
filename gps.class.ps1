@@ -202,12 +202,12 @@ throw "路线重叠"
    return $object.tostring()
 }
 <#
-calcroute for graph.ps1 calc road - place
+calcroute for graph.ps1 calc place - road
 #>
 static [psobject]calcroute ( 
-   [road]$road
-   ,
    [place]$placecoordinate
+   ,
+   [road]$road
    
    )
    { 
@@ -221,18 +221,10 @@ static [psobject]calcroute (
        $b =$road.roadcoordinate.roadcoordinate2
        $p = $placecoordinate.placecoordinate
 
-   
-   $OP = [System.Numerics.Vector2]::new($p.x,$p.z)
-   $v = [System.Numerics.Vector2]::new($b.x-$a.x,$b.z-$a.z)
-   $u= [System.Numerics.Vector2]::new($p.x-$a.x,$p.z-$a.z)
-   
-   $oa =[System.Numerics.Vector2]::new($a.x,$a.z)
-   
-   $pp1 = [System.Numerics.Vector2]::new(-$v[1],$v[0])
-   $ap= [System.Numerics.Vector2]::new($p.x-$a.x,$p.z-$a.z)
-   $r=[System.Numerics.Vector2]::dot($v,$ap)/[System.Numerics.Vector2]::dot($v,$v)
-   $projectedpoint="projected point"
-   
+   $v= $b-$a
+   $u = $p-$a
+   $r = ([System.Numerics.Vector3]::dot($u,$v))/([System.Numerics.Vector3]::dot($v,$v))
+
    
    
    
@@ -242,21 +234,35 @@ static [psobject]calcroute (
    if ($r -gt 1) {
        $projectedpoint=$b
        
-      $distance=[System.Numerics.Vector3]::distance($placecoordinate,$projectedpoint)
+      $distance=[System.Numerics.Vector3]::distance($p,$projectedpoint)
        
    
    }
    
+
+
+
+
+
+
+
+
+
+
+
+      
+   
    elseif ($r -lt 0) {
        $projectedpoint =$a
    
-       $distance=[System.Numerics.Vector3]::distance($placecoordinate,$projectedpoint)
+       $distance=[System.Numerics.Vector3]::distance($p,$projectedpoint)
    }
    
 else {
 
-       $projectedpoint= $oa+$v*$r
+       $projectedpoint= $a+$v*$r
    
+       $distance = [System.Numerics.Vector3]::distance($p,$projectedpoint)
           ### calc plane from coordinate
 
        
@@ -264,243 +270,184 @@ else {
 
 
 
-$n=[System.Numerics.Vector3]::new($v.y*$u.z-$v.z*$u.y,$v.z*$u.x-$v.x*$u.z,$v.x*$u.y-$v.y*$u.x)
-
-$A=$n.x
-
-$B=$n.y
-
-$C=$n.z
-
-$D= -($n.x*$p.x+$n.y*$p.y+$n.z*$p.z)
-
-if ($b -eq 0) {
-$y =$placecoordinate.y   
-}
-
-$y = -($projectedpoint.X*$A+$projectedpoint.Y*$C+$D)/$B
-
-
-
-
-
-
-
-       
-       $projectedpoint=[System.Numerics.Vector3]::new($projectedpoint.x,$y,$projectedpoint.y)
-       
-       $distance=[System.Numerics.Vector3]::distance($projectedpoint,$p)
        
    
 }
    
-   $startvertex = $projectedpoint
-   $endvertex =$placecoordinate
-   return [edge]::new($startVertex,$endvertex,$distance)
-        
-   
-       
-           }
-   
-static [psobject]calcroute ( 
-   [place]$placecoordinate
-   ,
-   [road]$road
-   
-
-   
-   )
-   { 
-       #default distance
-   $distance = [double]::PositiveInfinity
-   
-   
-   
-       
-       $a =$road.roadcoordinate.roadcoordinate1 
-       $b =$road.roadcoordinate.roadcoordinate2
-       $p = $placecoordinate.placecoordinate    
-   
-   $OP = [System.Numerics.Vector2]::new($p.x,$p.z)
-   $v = [System.Numerics.Vector2]::new($b.x-$a.x,$b.z-$a.z)
-   $u= [System.Numerics.Vector2]::new($p.x-$a.x,$p.z-$a.z)
-   
-   $oa =[System.Numerics.Vector2]::new($a.x,$a.z)
-   
-   $pp1 = [System.Numerics.Vector2]::new(-$v[1],$v[0])
-   $ap= [System.Numerics.Vector2]::new($p.x-$a.x,$p.z-$a.z)
-   $r=[System.Numerics.Vector2]::dot($v,$ap)/[System.Numerics.Vector2]::dot($v,$v)
-   $projectedpoint="projected point"
-   
-   
-   
-   
-   
-       
-   
-   if ($r -gt 1) {
-       $projectedpoint=$b
-       
-      $distance=[System.Numerics.Vector3]::distance($placecoordinate,$projectedpoint)
-       
-   
-   }
-   
-   elseif ($r -lt 0) {
-       $projectedpoint =$a
-   
-       $distance=[System.Numerics.Vector3]::distance($placecoordinate,$projectedpoint)
-   }
-   
-else {
-
-       $projectedpoint= $oa+$v*$r
-   
-          ### calc plane from coordinate
-
-       
-
-
-
-
-$n=[System.Numerics.Vector3]::new($v.y*$u.z-$v.z*$u.y,$v.z*$u.x-$v.x*$u.z,$v.x*$u.y-$v.y*$u.x)
-
-$A=$n.x
-
-$B=$n.y
-
-$C=$n.z
-
-$D= -($n.x*$p.x+$n.y*$p.y+$n.z*$p.z)
-
-if ($b -eq 0) {
-$y =$placecoordinate.y   
-}
-
-$y = -($projectedpoint.X*$A+$projectedpoint.Y*$C+$D)/$B
-
-
-
-
-
-
-
-       
-       $projectedpoint=[System.Numerics.Vector3]::new($projectedpoint.x,$y,$projectedpoint.y)
-       
-       $distance=[System.Numerics.Vector3]::distance($projectedpoint,$p)
-       
-   
-}
-   
-   $startvertex = $placecoordinate
+   $startvertex = $p
    $endvertex =$projectedpoint
    return [edge]::new($startVertex,$endvertex,$distance)
         
    
        
            }
-
-static [psobject]calcroute ( 
-   [System.Numerics.Vector3]$placecoordinate
-   ,
-   [road]$road
+   <#
+   method:calcroute
+   [road] - [place]
+   calc the graph weight with place and road
+   #>
+   static [psobject]calcroute ( 
+      [road]$road
+      ,
+      [place]$placecoordinate
+      
+      )
+      { 
+          #default distance
+      $distance = [double]::PositiveInfinity
+      
+      
+      
+          
+          $a =$road.roadcoordinate.roadcoordinate1 
+          $b =$road.roadcoordinate.roadcoordinate2
+          $p = $placecoordinate.placecoordinate
    
-
+      $v= $b-$a
+      $u = $p-$a
+      $r = ([System.Numerics.Vector3]::dot($u,$v))/([System.Numerics.Vector3]::dot($v,$v))
    
-   )
-   { 
-       #default distance
-   $distance = [double]::PositiveInfinity
-   
-   
-   
-       
-       $a =$road.roadcoordinate.roadcoordinate1 
-       $b =$road.roadcoordinate.roadcoordinate2
-       $p = $placecoordinate    
-   
-   $OP = [System.Numerics.Vector2]::new($p.x,$p.z)
-   $v = [System.Numerics.Vector2]::new($b.x-$a.x,$b.z-$a.z)
-   $u= [System.Numerics.Vector2]::new($p.x-$a.x,$p.z-$a.z)
-   
-   $oa =[System.Numerics.Vector2]::new($a.x,$a.z)
-   
-   $pp1 = [System.Numerics.Vector2]::new(-$v[1],$v[0])
-   $ap= [System.Numerics.Vector2]::new($p.x-$a.x,$p.z-$a.z)
-   $r=[System.Numerics.Vector2]::dot($v,$ap)/[System.Numerics.Vector2]::dot($v,$v)
-   $projectedpoint="projected point"
+      
+      
+      
+      
+          
+      
+      if ($r -gt 1) {
+          $projectedpoint=$b
+          
+         $distance=[System.Numerics.Vector3]::distance($p,$projectedpoint)
+          
+      
+      }
+      
    
    
    
    
    
-       
    
-   if ($r -gt 1) {
-       $projectedpoint=$b
-       
-      $distance=[System.Numerics.Vector3]::distance($placecoordinate,$projectedpoint)
-       
    
+   
+   
+   
+   
+         
+      
+      elseif ($r -lt 0) {
+          $projectedpoint =$a
+      
+          $distance=[System.Numerics.Vector3]::distance($p,$projectedpoint)
+      }
+      
+   else {
+   
+          $projectedpoint= $a+$v*$r
+      
+          $distance = [System.Numerics.Vector3]::distance($p,$projectedpoint)
+             ### calc plane from coordinate
+   
+          
+   
+   
+   
+   
+          
+      
    }
-   
-   elseif ($r -lt 0) {
-       $projectedpoint =$a
-   
-       $distance=[System.Numerics.Vector3]::distance($placecoordinate,$projectedpoint)
-   }
-   
-else {
-
-       $projectedpoint= $oa+$v*$r
-   
-          ### calc plane from coordinate
-
-       
-
-
-
-
-$n=[System.Numerics.Vector3]::new($v.y*$u.z-$v.z*$u.y,$v.z*$u.x-$v.x*$u.z,$v.x*$u.y-$v.y*$u.x)
-
-$A=$n.x
-
-$B=$n.y
-
-$C=$n.z
-
-$D= -($n.x*$p.x+$n.y*$p.y+$n.z*$p.z)
-
-if ($b -eq 0) {
-$y =$placecoordinate.y   
-}
-
-$y = -($projectedpoint.X*$A+$projectedpoint.Y*$C+$D)/$B
-
-
-
-
-
-
-
-       
-       $projectedpoint=[System.Numerics.Vector3]::new($projectedpoint.x,$y,$projectedpoint.y)
-       
-       $distance=[System.Numerics.Vector3]::distance($projectedpoint,$p)
-       
-   
-}
-   
-   $startvertex = $placecoordinate
-   $endvertex =$projectedpoint
-   return [edge]::new($startVertex,$endvertex,$distance)
-        
-   
-       
-           }
+      
+      $startvertex = $projectedpoint
+      $endvertex =$p
+      return [edge]::new($startVertex,$endvertex,$distance)
+           
+      
+          
+              }
+           <#
+           method:calcroute
+           [placecoordinate] - [road]
+           used to calc the distance from road to placecoordinate
+           #>
+           static [psobject]calcroute ( 
+            [System.Numerics.Vector3]$placecoordinate
+            ,
+            [road]$road
+            
+            )
+            { 
+                #default distance
+            $distance = [double]::PositiveInfinity
+            
+            
+            
+                
+                $a =$road.roadcoordinate.roadcoordinate1 
+                $b =$road.roadcoordinate.roadcoordinate2
+                $p = $placecoordinate
+         
+            $v= $b-$a
+            $u = $p-$a
+            $r = ([System.Numerics.Vector3]::dot($u,$v))/([System.Numerics.Vector3]::dot($v,$v))
+         
+            
+            
+            
+            
+                
+            
+            if ($r -gt 1) {
+                $projectedpoint=$b
+                
+               $distance=[System.Numerics.Vector3]::distance($p,$projectedpoint)
+                
+            
+            }
+            
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+               
+            
+            elseif ($r -lt 0) {
+                $projectedpoint =$a
+            
+                $distance=[System.Numerics.Vector3]::distance($p,$projectedpoint)
+            }
+            
+         else {
+         
+                $projectedpoint= $a+$v*$r
+            
+                $distance = [System.Numerics.Vector3]::distance($p,$projectedpoint)
+                   ### calc plane from coordinate
+         
+                
+         
+         
+         
+         
+                
+            
+         }
+            
+            $startvertex = $p
+            $endvertex =$projectedpoint
+            return [edge]::new($startVertex,$endvertex,$distance)
+                 
+            
+                
+                    }
      <#
-    
+    method:calcroute
+    [road] [placecoordinate]
      #>
 static [psobject]calcroute ( 
    [road]$road
@@ -540,7 +487,7 @@ static [psobject]calcroute (
    if ($r -gt 1) {
        $projectedpoint=$b
        
-      $distance=[System.Numerics.Vector3]::distance($placecoordinate,$projectedpoint)
+      $distance=[System.Numerics.Vector3]::distance($p,$projectedpoint)
        
    
    }
@@ -548,7 +495,7 @@ static [psobject]calcroute (
    elseif ($r -lt 0) {
        $projectedpoint =$a
    
-       $distance=[System.Numerics.Vector3]::distance($placecoordinate,$projectedpoint)
+       $distance=[System.Numerics.Vector3]::distance($p,$projectedpoint)
    }
    
 else {
@@ -573,7 +520,7 @@ $C=$n.z
 $D= -($n.x*$p.x+$n.y*$p.y+$n.z*$p.z)
 
 if ($b -eq 0) {
-$y =$placecoordinate.y   
+$y =$p.y   
 }
 
 $y = -($projectedpoint.X*$A+$projectedpoint.Y*$C+$D)/$B
@@ -600,6 +547,11 @@ $y = -($projectedpoint.X*$A+$projectedpoint.Y*$C+$D)/$B
        
            }
    
+           <#
+           method:calcroute 
+           [road] [road]
+           used to calc the distance between road and road
+           #>
 ### calcroute
        static[object] calcroute([road]$roadA,[road]$roadB) {
 
@@ -727,7 +679,7 @@ return [edge]::new($null,$null,$distance)
 ###### main GPS parameter holder class
 
 
-
+ 
 
 
 

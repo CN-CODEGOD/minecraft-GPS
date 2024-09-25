@@ -64,7 +64,27 @@ function bellman-ford {
      
  
       }
-      $distances,$previousVertices
+      function Get-Path {
+        param (
+            $previousVertices,
+            $endvertex
+        )
+        
+        $path = @()
+        $currentVertex = $endvertex
+        
+        while ($currentVertex -ne $null) {
+            $path = @($currentVertex) + $path
+            $currentVertex = $previousVertices[$currentVertex]
+        }
+    
+        return $path
+    }
+    $endvertex = $GRAPH.getVertexByKey("p")
+    
+    $path = Get-Path -previousVertices $previousVertices -endvertex $endvertex
+    return $distances, $previousVertices, $path
+    
       
       
 
@@ -72,4 +92,3 @@ function bellman-ford {
     
 }
 
-      

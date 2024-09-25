@@ -1,8 +1,12 @@
 describe 'gps class' {
+
     beforeAll{
+
 . "$Psscriptroot\graph.class.ps1"        
 . "$PSScriptRoot\gps.class.ps1"
- 
+ $example_place1 = [place]::new(([System.Numerics.Vector3]::new(1,2,3)),"o")
+$example_place2= [place]::new(([System.Numerics.Vector3]::new(4,5,6)),"P")
+
 $road1= [road]([pscustomobject]@{
     
 
@@ -38,24 +42,44 @@ id=0
 $placecoordinate1=[System.Numerics.Vector3]::new(1,2,50)
     }
     context 'calcroute'{
+        it 'place-road'{
+$route = [road]::calcroute($example_place1,$road1)
+$route|should not be $null
+$route.startVertex|should not be $null
+$route.endvertex|should not be $null
+$route.weight|Should not be $null
+($route.weight).gettype()|Should be "float"
+        }
+        it 'road-place'{
 
+            $route =[road]::calcroute($road1,$example_place1)
+            $route|should not be $null
+$route.startVertex|should not be $null
+$route.endvertex|should not be $null
+$route.weight|Should not be $null   
+($route.weight).gettype()|Should be "float"
+        }
         it 'road-road'{
             $route = [road]::calcroute($road1,$road2)
 $route|should not be $null
 $route.startVertex|should not be $null
 $route.endvertex|should not be $null
+$route.weight|Should not be $null
+($route.weight).gettype()|Should be "float"
         }
-        it 'place-road'{
+        it 'placecoordinate-road'{
 $route = [road]::calcroute($placecoordinate1,$road2)
 $route|should not be $null
 $route.startVertex|should not be $null
 $route.endvertex|should not be $null
+($route.weight).gettype()|Should be "float"
         }
-        it 'road-place'{
+        it 'road-placecoordinate'{
 $route = [road]::calcroute($road1,$placecoordinate1)
 $route|should not be $null
 $route.startVertex|should not be $null
 $route.endvertex|should not be $null
+($route.weight).gettype()|Should be "float"
         }
     }
     context 'import-xml'{

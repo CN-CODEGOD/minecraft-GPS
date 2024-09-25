@@ -1,32 +1,19 @@
-. "C:\Program Files\TEST\graph.ps1"
-. C:\Users\34683\BFS\bellman-ford.ps1
-. C:\Users\34683\BFS\graph.class.ps1
-. C:\Users\34683\BFS\gps.class.ps1
+
 describe 'GRAPH' {
-
-    context 'Queue' {
-
-        it 'test queue'{
-
-            $roadsque= New-Object System.Collections.Generic.Queue[object]
-            $roadsque.Enqueue(1)
-            $roadsque.Enqueue(2)
-            $roadsque.Enqueue(3)
-            $roadsque.Count|Should BE 3
-                $roadsque.ForEach(
-                {$_+1}
-                )|Should BE 2,3,4
-        }
+    BeforeAll{
+        
     }
-    context 'graph function'{
-it 'test graph edge'{
-    $mycoordinate =[placecoordinate](1,2,3)
-    $destination =[placecoordinate](100,100,100)
-    
-    $graph = graph $mycoordinate $destination "THE_END"
-    $graph | should not be $null
 
+Context 'generate graph' {
+    it 'generate from graph.ps1'{
+     $graph=    & "C:\Users\Administrator\new.graph.ps1" 
+     $graph.edges.Values.startvertex|Should not be $null
+     $graph.edges.Values.startvertex|%{$_.edges |Should not be $null }
+    }
+    it 'generate from templategraph.ps1' {
+        $graph = & "C:\Program Files\PowerShell\7\Modules\minecraft-GPS\graph1.ps1"
+        $graph.edges.Values.startvertex|Should not be $null
+        $graph.edges.Values.startvertex|%{$_.edges |Should not be $null }
+    }
 }
-
-    }
 }
