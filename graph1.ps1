@@ -1,6 +1,6 @@
 
 using module "C:\Program Files\PowerShell\7\Modules\minecraft-GPS\minecraft-GPS.PSM1"
-. $PSScriptRoot\bellman-ford.ps1
+using module "C:\Program Files\PowerShell\7\Modules\minecraft-GPS\import-xml\import-xml.psm1"
 
 
 function graph {
