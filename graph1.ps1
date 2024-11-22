@@ -1,5 +1,5 @@
-. $PSScriptRoot\gps.class.ps1
-. $PSScriptRoot\graph.class.ps1
+
+using module "C:\Program Files\PowerShell\7\Modules\minecraft-GPS\minecraft-GPS.PSM1"
 . $PSScriptRoot\bellman-ford.ps1
 
 
@@ -115,7 +115,7 @@ $GRAPH.addEdge($edgeDP)
 
 $GRAPH
 }
-$example_place1 = [place]::new(([System.Numerics.Vector3]::new(1,2,-100)),"o")
+$example_place1 = [place]::new(([System.Numerics.Vector3]::new(61,2,-43)),"o")
 $example_place2= [place]::new(([System.Numerics.Vector3]::new(4,5,100)),"P")
 
 graph -myplace $example_place1 -destination $example_place2 -dimension "nether" 

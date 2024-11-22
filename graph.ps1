@@ -1,5 +1,4 @@
-. $PSScriptRoot\gps.class.ps1
-. $PSScriptRoot\graph.class.ps1
+
 . $PSScriptRoot\bellman-ford.ps1
 
 
@@ -23,7 +22,6 @@ foreach ($road in $roads) {
     $roadsqueue.enqueue($road)
 
 }
-
 $roadsqueue.enqueue($destination)
 
     

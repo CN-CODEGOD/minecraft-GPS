@@ -45,7 +45,7 @@ function bellman-ford {
             
               $distanceToVertex = ($distances[$vertex.getKey()]).weight
               $distanceToNeighbor =$distanceToVertex + $edge.weight.weight
-              $Neighbordistance = ($distances[$neighbor.getkey()]  ).weight
+              $Neighbordistance = ($distances[$neighbor.getkey()]  ).weight 
               if ($distanceToNeighbor -lt $Neighbordistance  ) {
                  $distances[$neighbor.getkey()]   = $edge.weight
                     $previousVertices[$neighbor.getKEY()] = $vertex
@@ -75,7 +75,7 @@ function bellman-ford {
         
         while ($currentVertex -ne $null) {
             $path = @($currentVertex) + $path
-            $currentVertex = $previousVertices[$currentVertex]
+            $currentVertex = $previousVertices[$currentVertex.name]
         }
     
         return $path
