@@ -79,7 +79,7 @@ $route = [road]::calcroute($road1,$placecoordinate1)
 $route|should not be $null
 $route.startVertex|should not be $null
 $route.endvertex|should not be $null
-($route.weight).gettype()|Should be "float"
+($route.weight).gettype()|Should be "float"             
         }
     }
     context 'import-xml'{

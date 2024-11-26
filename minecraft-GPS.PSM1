@@ -387,11 +387,11 @@ road([roadcoordinate]$roadcoordinate,[string]$name,[dimension]$dimension,[int]$i
 #### validate
 static [void]validate([road]$road){
 
-   $roads =Import-clixml $PSScriptRoot\xml\roads.xml
+   $roads =Import-xml $PSScriptRoot\xml\roads.xml
 $roads| foreach-object { 
 
 
-if (($_.roadcoordinate.x..$_.roadcoordinate.x1).contains($road.roadcoordinate.x) -and ($_.roadcoordinate.x..$_.roadcoordinate.x1).contains($road.roadcoordinate.x1) -and ($_.roadcoordinate.y..$_.roadcoordinate.y1).contains($road.roadcoordinate.y) -and ($_.roadcoordinate.y..$_.roadcoordinate.y1).contains($road.roadcoordinate.y1) -and ($_.roadcoordinate.z..$_.roadcoordinate.z1).contains($road.roadcoordinate.z) -and ($_.roadcoordinate.z..$_.roadcoordinate.z1).contains($road.roadcoordinate.z1)) 
+if (($_.roadcoordinate.roadcoordinate1.x..$_.roadcoordinate.roadcoordinate2.x).contains($road.roadcoordinate.roadcoordinate1.x) -and ($_.roadcoordinate.roadcoordinate1.x..$_.roadcoordinate.roadcoordinate2.x).contains($road.roadcoordinate.roadcoordinate2.x) -and ($_.roadcoordinate.roadcoordinate1.y..$_.roadcoordinate.roadcoordinate2.y).contains($road.roadcoordinate.roadcoordinate1.y) -and ($_.roadcoordinate.roadcoordinate1.y..$_.roadcoordinate.roadcoordinate2.y).contains($road.roadcoordinate.roadcoordinate2.y) -and ($_.roadcoordinate.roadcoordinate1.z..$_.roadcoordinate.roadcoordinate2.z).contains($road.roadcoordinate.roadcoordinate1.z) -and ($_.roadcoordinate.roadcoordinate1.z..$_.roadcoordinate.roadcoordinate2.z).contains($road.roadcoordinate.roadcoordinate2.z)) 
 {
 throw "路线重叠"
 }   
@@ -409,7 +409,7 @@ throw "路线重叠"
 #>
 [object] save(){
    
-   $object = [xelement]::new("object",[System.Xml.Linq.XAttribute]::new("type","road"),
+   $object = [xelement]::new("object",[System.Xml.Linq.XAttribute]::new("NAME","road"),
        [xelement]::new("property",[XAttribute]::new("name","roadcoordinate"),
            [xelement]::new("property",[XAttribute]::new("name","roadcoordinate1"),
                [xelement]::new("property",[XAttribute]::new("name","x"),$this.roadcoordinate.roadcoordinate1.X),
@@ -978,7 +978,7 @@ else
 
    [object]save(){
 
-   $object=[XElement]::new("object",[XAttribute]::new("type","wynncraft_place"),
+   $object=[XElement]::new("object",[XAttribute]::new("NAME","wynncraft_place"),
        [XElement]::new("property",[XAttribute]::new("name","placecoordinate"),
        [XElement]::new("property",[XAttribute]::new("name","x"),$this.placecoordinate.x),
        [XElement]::new("property",[XAttribute]::new("name","y"),$this.placecoordinate.y),
@@ -1003,7 +1003,7 @@ else
    #### validate method for repeat adding
 static [void]validate ([wynncraft_place]$wynncraft_place,[int]$distance_limit){
 
-$wynncraft_places=Import-clixml $PSScriptRoot\xml\wynncraft_places.xml|Where-Object {$_.type -like $wynncraft_place.type}
+$wynncraft_places=Import-xml $PSScriptRoot\xml\wynncraft_places.xml|Where-Object {$_.type -like $wynncraft_place.type}
 
 
 
@@ -1011,7 +1011,7 @@ $wynncraft_places|foreach-object {
 
    
 
-$distance = [mainmath]::calc($wynncraft_place.placecoordinate,$_.placecoordinate)
+$distance = [System.Numerics.Vector3]::calc($wynncraft_place.placecoordinate,$_.placecoordinate)
 
    if ($distance -lt $distance_limit) {
        throw "重复坐标"
@@ -1074,7 +1074,7 @@ survival_place ($properties) {
    }
    [Object]save(){
 
-       $object = [XElement]::new("object",[XAttribute]::new("type","survival_place"),
+       $object = [XElement]::new("object",[XAttribute]::new("name","survival_place"),
 
        [XElement]::new("property",[XAttribute]::new("name","placecoordinate"),
        [XElement]::new("property",[XAttribute]::new("name","x"),$this.placecoordinate.x),
@@ -1093,15 +1093,15 @@ survival_place ($properties) {
 
 #### validation mathod for repeat adding
   static [void]validate ([survival_place]$survival_place,[int]$distance_limit){
-       $survival_places = Import-clixml $PSScriptRoot\xml\survival_places.xml|Where-Object {$_.type -like $survival_place.type -and $_.dimension -like $survival_place.dimension}
+       $survival_places = Import-xml $PSScriptRoot\xml\survival_places.xml|Where-Object {$_.type -like $survival_place.type -and $_.dimension -like $survival_place.dimension}
    
      $survival_places|foreach-object {
-      $distance= [mainmath]::calc($survival_place.placecoordinate,$_.placecoordinate)
+      $distance= [System.Numerics.Vector3]::Distance($survival_place.placecoordinate,$_.placecoordinate)
 
        if ($distance -lt $distance_limit) {
            throw "坐标重复"
        }
-       
+        
      }
 
 
@@ -1159,7 +1159,7 @@ class teleportation_place {
 [Object]save(){
 
 
-$object =[XElement]::new("object",[XAttribute]::new("type","teleportation_place"),
+$object =[XElement]::new("object",[XAttribute]::new("name","teleportation_place"),
 [XElement]::new("property",[XAttribute]::new("name","placecoordinate"),
 [XElement]::new("property",[XAttribute]::new("name","x"),$this.placecoordinate.x),
 [XElement]::new("property",[XAttribute]::new("name","y"),$this.placecoordinate.y),
@@ -1175,13 +1175,13 @@ return $object.ToString()
    
    {
 
-       $teleportation_places=Import-clixml $PSScriptRoot\teleportation_places.xml|Where-Object($_.type -eq $teleportation_place.type)
+       $teleportation_places=Import-xml $PSScriptRoot\teleportation_places.xml|Where-Object($_.type -eq $teleportation_place.type)
        $distance_limit=50
  
        $teleportation_places| foreach-object {
 
 
-           $distance=[mainmath]::calc($teleportation_place.placecoordinate,$_.placecoordinate)
+           $distance=[System.Numerics.Vector3]::calc($teleportation_place.placecoordinate,$_.placecoordinate)
 
 
            if ($distance -lt $distance_limit) {
@@ -1200,7 +1200,7 @@ static [hashtable]calcroute (
    )
    {
    
-       $distance = [mainmath]::calc($mycoordinate,$teleportation_place.placecoordinate)
+       $distance = [System.Numerics.Vector3]::calc($mycoordinate,$teleportation_place.placecoordinate)
        
    
        return @{
@@ -1784,7 +1784,7 @@ save-object -object $wynncraft_place
 
                 $id =[int]($survival_places|Sort-Object -Property id |Select-Object -Last 1).id+1
                 
-            $survival_place.id  =$id    
+            $survival_place.id=$id    
             
                 save-object -object $survival_place
             "成功添加生存存档{0}坐标：{1},{2},{3}" -f $survival_place.type,$survival_place.placecoordinate.x,$survival_place.placecoordinate.y,$survival_place.placecoordinate.z
@@ -1862,7 +1862,7 @@ $roads = import-xml $road.path
 $pair=$roads|Where-Object {$_.id -eq $road.id}
 $roads=$roads|Where-Object {$_.id -ne $road.id}
 $roads|export-object -path $road.path       
-"成功移除{0}号路线:{1},{2},{3},{4},{5},{6}" -f $pair.id ,$pair.roadcoordinate.roadcoordinate1.x,$pair.roadcoordinate.roadcoordinate1.y,$pair.roadcoordinate.roadcoordinate1.z,$pair.roadcoordinate.roadcoordinate2.x1,$pair.roadcoordinate.roadcoordinate2.y,$pair.roadcoordinate.roadcoordinate2.z
+$pair|%{"成功移除{0}号路线:{1},{2},{3},{4},{5},{6}" -f $_.id ,$_.roadcoordinate.roadcoordinate1.x,$_.roadcoordinate.roadcoordinate1.y,$_.roadcoordinate.roadcoordinate1.z,$_.roadcoordinate.roadcoordinate2.x1,$_.roadcoordinate.roadcoordinate2.y,$_.roadcoordinate.roadcoordinate2.z}
         }
         ##parameterset script block for remove-place -wynncraft_place
         wynncraft_places {

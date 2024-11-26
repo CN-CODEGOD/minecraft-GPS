@@ -1,5 +1,6 @@
 
-. $PSScriptRoot\bellman-ford.ps1
+
+using module "C:\Program Files\PowerShell\7\Modules\minecraft-GPS\minecraft-GPS.PSM1"
 
 
 function graph {
@@ -14,9 +15,13 @@ function graph {
     )
     
 $roads=import-xml $PSScriptRoot\xml\roads.xml|Where-Object {$_.dimension -like $dimension}
+#路径的点P
 $destination.id="P"
+#添加graph
 $graph = New-Object Graph
+#添加路的queque
 $roadsqueue= New-Object System.Collections.Generic.Queue[object]
+#enque 
 $roadsqueue.enqueue($myplace)
 foreach ($road in $roads) { 
     $roadsqueue.enqueue($road)

@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<objects>
+  <object name="survival_place" id="1">
+    <property name="placecoordinate">
+      <property name="x">1</property>
+      <property name="y">3</property>
+      <property name="z">1</property>
+    </property>
+    <property name="dimension">nether</property>
+    <property name="type">portal</property>
+    <property name="id">1</property>
+  </object>
+  <object name="survival_place" id="2">
+  <property name="placecoordinate">
+    <property name="x">1</property>
+    <property name="y">3</property>
+    <property name="z">1</property>
+  </property>
+  <property name="dimension">nether</property>
+  <property name="type">portal</property>
+  <property name="id">1</property>
+</object>
+</objects>
