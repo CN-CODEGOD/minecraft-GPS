@@ -1,4 +1,6 @@
 
+. "$PSScriptRoot/graph.class.ps1"
+. "$PSScriptRoot/gps.class.ps1"
 
 function bellman-ford {
     param (

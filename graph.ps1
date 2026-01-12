@@ -1,6 +1,7 @@
 
 
-using module "C:\Program Files\PowerShell\7\Modules\minecraft-GPS\minecraft-GPS.PSM1"
+. "$PSScriptRoot/graph.class.ps1"
+. "$PSScriptRoot/gps.class.ps1"
 
 
 function graph {

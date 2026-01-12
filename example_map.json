@@ -1,0 +1,22 @@
+{
+  "coordinates": [
+    {
+      "name": "Spawn Point",
+      "x": 0,
+      "y": 64,
+      "z": 0
+    },
+    {
+      "name": "Village",
+      "x": 100,
+      "y": 70,
+      "z": 200
+    },
+    {
+      "name": "Mine",
+      "x": -50,
+      "y": 20,
+      "z": 150
+    }
+  ]
+}
